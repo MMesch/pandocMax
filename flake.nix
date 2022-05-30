@@ -5,8 +5,12 @@
       nixpkgs.url = "nixpkgs";
       styles.url = github:citation-style-language/styles;
       styles.flake = false;
+      flake-compat = {
+          url = github:edolstra/flake-compat;
+          flake = false;
+          };
   };
-  outputs = { self, nixpkgs, styles }: {
+  outputs = { self, nixpkgs, styles, flake-compat }: {
 
     packages.x86_64-linux.pandocWithDiagrams = (
         let
