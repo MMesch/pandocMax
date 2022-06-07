@@ -35,7 +35,7 @@
             dgramDependencies = with pkgs; [
                 pandoc
                 haskellPackages.pandoc-crossref
-                texlive.combined.scheme-small
+                texlive.combined.scheme-full
                 gnome.librsvg # for conversion from svg to pdf
                 graphviz
                 plantuml
