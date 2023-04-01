@@ -1,6 +1,57 @@
 {
   "nodes": {
+    "columns": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1679528808,
+        "narHash": "sha256-YwMmLTy/Z8mevTOKTIVWPOS+3T7xVdyj0FGj3h+fUsM=",
+        "owner": "dialoa",
+        "repo": "columns",
+        "rev": "1aed10a3781e9b1fa3113f2e0a40d02918aa31fc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dialoa",
+        "repo": "columns",
+        "type": "github"
+      }
+    },
+    "dgram": {
+      "inputs": {
+        "flake-compat": "flake-compat",
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1680329556,
+        "narHash": "sha256-/D3i2G3wxerMRH8ivH5YJZb7t+kAyayRMtVJnebsQFs=",
+        "owner": "mmesch",
+        "repo": "dgram",
+        "rev": "7f409dcd42976b429832464c193100c694141e9c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mmesch",
+        "repo": "dgram",
+        "type": "github"
+      }
+    },
     "flake-compat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1650374568,
+        "narHash": "sha256-Z+s0J8/r907g149rllvwhb4pKi8Wam5ij0st8PwAh+E=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "b4a34015c698c7793d592d66adbab377907a2be8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "flake-compat_2": {
       "flake": false,
       "locked": {
         "lastModified": 1650374568,
@@ -18,6 +69,20 @@
     },
     "nixpkgs": {
       "locked": {
+        "lastModified": 1649676960,
+        "narHash": "sha256-gRqfhOrXnNBuDfJqD0MBLBXgr5odoCJNbGd1ifG3WFM=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "0cfba90938ccd0578b4dda892926be76299395d5",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
         "lastModified": 1640418986,
         "narHash": "sha256-a8GGtxn2iL3WAkY5H+4E0s3Q7XJt6bTOvos9qqxT5OQ=",
         "owner": "NixOS",
@@ -32,8 +97,10 @@
     },
     "root": {
       "inputs": {
-        "flake-compat": "flake-compat",
-        "nixpkgs": "nixpkgs",
+        "columns": "columns",
+        "dgram": "dgram",
+        "flake-compat": "flake-compat_2",
+        "nixpkgs": "nixpkgs_2",
         "styles": "styles"
       }
     },

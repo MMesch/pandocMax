@@ -3,71 +3,51 @@
 
   inputs = {
       nixpkgs.url = "nixpkgs";
-      styles.url = github:citation-style-language/styles;
-      styles.flake = false;
+      styles = {
+        url = github:citation-style-language/styles;
+        flake = false;
+      };
+      columns = {
+        url = github:dialoa/columns;
+        flake = false;
+      };
+      dgram.url = github:mmesch/dgram;
       flake-compat = {
           url = github:edolstra/flake-compat;
           flake = false;
-          };
+      };
   };
-  outputs = { self, nixpkgs, styles, flake-compat }: {
+  outputs = { self, nixpkgs, styles, columns, dgram, flake-compat }: {
 
-    packages.x86_64-linux.pandocWithDiagrams = (
+    packages.x86_64-linux.pandocMax = (
         let
             system = "x86_64-linux";
             pkgs = nixpkgs.legacyPackages.${system};
             fonts = pkgs.makeFontsConf { fontDirectories = [ pkgs.dejavu_fonts ]; };
-            dgram = ./dgram.lua;
-            execName = "pandocDgram";
-            pandocDgram = pkgs.writeShellScriptBin execName ''
-              echo "converting"
-              export FONTCONFIG_FILE=${fonts}
-              pandoc \
-                  --lua-filter=${dgram} \
-                  --filter pandoc-crossref \
-                  -M date="`date "+%B %e, %Y"`" \
-                  --csl ${styles}/chicago-fullnote-bibliography.csl \
-                  --citeproc \
-                  --pdf-engine=xelatex \
-                  "$@"
-              echo "pandoc done"
-              '';
-            dgramDependencies = with pkgs; [
+        in
+        (pkgs.writeShellApplication {
+          name = "pandocMax";
+          runtimeInputs =
+              with pkgs; [
                 pandoc
                 haskellPackages.pandoc-crossref
                 texlive.combined.scheme-full
-                gnome.librsvg # for conversion from svg to pdf
-                graphviz
-                plantuml
-                nodePackages.vega-cli
-                # the following is waiting on https://github.com/NixOS/nixpkgs/pull/162434
-                (nodePackages.vega-lite.override {
-                    postInstall = ''
-                        cd node_modules
-                        for dep in ${nodePackages.vega-cli}/lib/node_modules/vega-cli/node_modules/*; do
-                          if [[ ! -d ''${dep##*/} ]]; then
-                            ln -s "${nodePackages.vega-cli}/lib/node_modules/vega-cli/node_modules/''${dep##*/}"
-                          fi
-                        done
-                      '';})
-                nodePackages.mermaid-cli
-                svgbob
-                ];
-        in
-          pkgs.symlinkJoin {
-              name = execName;
-              paths = [ pandocDgram ] ++ dgramDependencies;
-              buildInputs = [ pkgs.makeWrapper ];
-              postBuild = ''
-                wrapProgram $out/bin/${execName} --prefix PATH : $out/bin
-                for f in $out/lib/node_modules/.bin/*; do
-                   path="$(readlink --canonicalize-missing "$f")"
-                   ln -s "$path" "$out/bin/$(basename $f)"
-                done
-              '';
-          }
-        );
+                  ];
+          text = ''
+            echo "pandocMax"
+            pandoc \
+                --lua-filter=${dgram.packages.x86_64-linux.pandocScript}/dgram.lua \
+                --lua-filter=${columns}/columns.lua \
+                --filter pandoc-crossref \
+                -M date="$(date "+%B %e, %Y")" \
+                --csl ${styles}/chicago-fullnote-bibliography.csl \
+                --citeproc \
+                --pdf-engine=xelatex \
+                "$@"
+            echo "pandoc done"
+            '';
+        }));
 
-    defaultPackage.x86_64-linux = self.packages.x86_64-linux.pandocWithDiagrams;
+    defaultPackage.x86_64-linux = self.packages.x86_64-linux.pandocMax;
   };
 }
