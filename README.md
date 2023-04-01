@@ -27,6 +27,11 @@ To use this template, open a new folder and type: `nix run github:mmesch/pandocM
 
 You can use citations [@nixosWebsite] and references to sections, e.g. to sec [@sec:intro], figures, etc ...
 
+# Table
+
+```{.table type="pipe" source="data.csv"}
+```
+
 # Diagrams
 
 ## Plantuml

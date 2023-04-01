@@ -31,6 +31,7 @@
               with pkgs; [
                 pandoc
                 haskellPackages.pandoc-crossref
+                haskellPackages.pandoc-csv2table
                 texlive.combined.scheme-full
                   ];
           text = ''
@@ -39,6 +40,7 @@
                 --lua-filter=${dgram.packages.x86_64-linux.pandocScript}/dgram.lua \
                 --lua-filter=${columns}/columns.lua \
                 --filter pandoc-crossref \
+                --filter pandoc-csv2table \
                 -M date="$(date "+%B %e, %Y")" \
                 --csl ${styles}/chicago-fullnote-bibliography.csl \
                 --citeproc \
